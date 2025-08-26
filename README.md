@@ -27,7 +27,7 @@ This database serves as my **CS50 SQL** final project. Its purpose is to analyze
 
 * **In Scope:**
     A user should be able to query and retrieve data for specific years or ranges of years. They should be able to perform aggregations (e.g., average inflation over a decade), calculate derived metrics (e.g., per capita GDP), and join different data sets to analyze relationships (e.g., the relationship between GDP growth and total investments).
-    
+
 * **Out of Scope:**
     Users cannot add, delete, or modify data. The database is read-only, as the data is a historical record. Users also cannot perform complex forecasting or run machine learning models directly within the database.
 
@@ -39,10 +39,40 @@ This database serves as my **CS50 SQL** final project. Its purpose is to analyze
 
 * **Entities:** The database is designed with four entities to represent the data in a normalized structure: `core_economy`, `demographics`, `financial_flows`, and `socio_economic_metrics`.
 * **Attributes:**
-    * `core_economy`: **`Year`** (PRIMARY KEY), `GDP`, `Growth`.
-    * `demographics`: **`Year`** (FOREIGN KEY), `Population`, `Population Growth`, `Net Migration`.
-    * `financial_flows`: **`Year`** (FOREIGN KEY), `Total Investments`, `Remittance`.
-    * `socio_economic_metrics`: **`Year`** (FOREIGN KEY), `Per Capita`, `Inflation Rate`, `Unemployed Rate`, `Internet Users`.
+
+    **1. `core_economy`**
+    This is the central table, which contains the main economic indicators and serves as the primary key for all other tables.
+
+    * `year`: The specific year the data represents (e.g., 1970, 2020). This column is the **primary key** for your entire database.
+    * `gdp`: The **Gross Domestic Product** in **billion US dollars ($)**. This is the total value of goods and services produced.
+    * `growth`: The **annual GDP growth rate** in **percentage (%)**. This shows how much the economy grew or shrank compared to the previous year.
+
+    **2. `demographics`**
+
+    This table contains information about population and migration, linked to `core_economy` by the `year` column.
+
+    * `year`: The year of the data, which is a **foreign key** referencing `core_economy`.
+    * `population`: The total **population** of the country.
+    * `population growth`: The **annual population growth rate** in **percentage (%)**.
+    * `net migration`: The net number of people migrating into or out of the country in a given year.
+
+    **3. `financial_flows`**
+
+    This table tracks money moving into the country, linked to `core_economy` by the `year` column.
+
+    * `year`: The year of the data, which is a **foreign key** referencing `core_economy`.
+    * `total investments`: The **total amount of investments** in **billion US dollars ($)**.
+    * `remittance`: The total amount of money sent home by people living abroad in **billion US dollars ($)**.
+
+    **4. `socio_economic_metrics`**
+
+    This table contains a mix of social and economic indicators, linked to `core_economy` by the `year` column.
+
+    * `year`: The year of the data, which is a **foreign key** referencing `core_economy`.
+    * `per capita`: The **per capita income** in **US dollars ($)**.
+    * `inflation rate`: The **annual inflation rate** in **percentage (%)**. This measures how quickly prices for goods and services are rising.
+    * `unemployed rate`: The **unemployment rate** in **percentage (%)**.
+    * `internet users`: The **percentage of the population** using the internet in **percentage (%)**.
 
 All columns are set to a numerical data type (e.g., **`INTEGER`** or **`REAL`**) to support mathematical operations like addition, division, and averaging. The **`Year`** column is an **`INTEGER`**, as it represents a whole number. Other metrics that can have decimal values (like GDP or growth rates) are **`REAL`** to ensure precision.
 
@@ -51,6 +81,7 @@ The **`Year`** column is a **`PRIMARY KEY`** in the `core_economy` table to guar
 ***
 
 ## Relationships
+
 <p align="center">
   <img src="images/er diagram.png" alt="ER Diagram" width="600">
 </p>
