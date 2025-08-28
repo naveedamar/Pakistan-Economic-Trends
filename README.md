@@ -108,7 +108,7 @@ All entities are linked by a **one-to-one relationship** with the `core_economy`
 
 * This table shows the average GDP for each decade, highlighting long-term economic trends.
 <p align="center">
-    <img src="images/AVERAGE_GDP.png" width="500" height="300" alt="Average GDP Per Decade">
+    <img src="images/AVERAGE GDP.png" width="500" height="300" alt="Average GDP Per Decade">
 </p>
 
 ### Total And Avg Remittances Through Out 5 Decades
