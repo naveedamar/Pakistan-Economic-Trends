@@ -229,6 +229,132 @@ INSERT INTO socio_economic_metrics (year, "per capita", "inflation rate", "unemp
 
 -- SELECT QUERIES
 
+/*
+used standard functions like MIN, MAX, AVG etc
+also special funtions like  PRINTF("%,d", "value") this works same as it works in C
+*/
+
+--BASIC QUERIES
+
+
+--TOTAL AND AVG REMITTANCES THROUGH OUT 5 DECADES
+SELECT PRINTF("%,d", SUM("remittance")) AS "TOTAL REMITTANCE",
+    PRINTF("%,d", AVG("remittance")) AS "AVERAGES REMITTANCE"
+FROM "financial_flows";
+
+--GPD GROWTH VS UNEMPLOYMENT
+SELECT "sem"."year" AS "YEAR",
+    ROUND("dg"."population growth", 2) AS "POPULLATION GROWTH",
+    ROUND("sem"."unemployed rate", 2) AS "UNEMPLOYMENT"
+FROM "socio_economic_metrics" AS "sem"
+INNER JOIN "demographics" AS "dg" ON "dg"."year" = "sem"."year"
+WHERE "sem"."unemployed rate" IS NOT NULL;
+
+
+--Cross-Table Analysis
+
+
+--GDP, POPULATION AND INFLATION COMPARISON 1970 AND 2020
+SELECT "ce"."year" AS "YEAR",
+    PRINTF("%,.0f", "ce"."gdp" * 1000000000.0) AS "GDP",
+    PRINTF("%,d", "dg"."population") AS "POPULATION",
+    ROUND("sem"."inflation rate", 2) AS "INFLATION RATE"
+FROM "core_economy" AS "ce"
+INNER JOIN "socio_economic_metrics" AS "sem" ON "sem"."year" = "ce"."year"
+INNER JOIN "demographics" AS "dg" ON "dg"."year" = "ce"."year"
+WHERE "ce"."year" = 1970 OR "ce"."year" = 2020;
+
+--YEAR, POPULATION GROWTH AND GDP GROWTH CORRELATION OVER 6 DECADES
+SELECT "ce"."year" AS "YEAR",
+    ROUND("dg"."population growth", 2) AS "POPULATION GROWTH",
+    "ce"."growth" AS "GDP GROWTH"
+FROM "core_economy" AS "ce"
+INNER JOIN "demographics" AS "dg" ON "dg"."year" = "ce"."year"
+WHERE "ce"."year" % 10 = 0;
+
+--AVG(INFLATION) WHEN GDP GROWNTH WAS ABOVE 5%
+SELECT ROUND(AVG("sem"."inflation rate"),2) AS "AVERAGE INFLATION WHEN GPD GROWTH WAS GREATER THAN 5%"
+FROM "socio_economic_metrics" AS "sem"
+INNER JOIN "core_economy" AS "ce" ON "ce"."year" = "sem"."year"
+WHERE "ce"."growth" > 5.0;
+
+
+--Trend and Aggregate Analysis
+
+
+--HIGHEST AND LOWEST GDP YEAR AND VALUE
+SELECT "year" AS "YEAR",
+    PRINTF("%,.0f", "gdp" * 1000000000.0) AS "GDP"
+FROM "core_economy"
+WHERE "gdp" = (
+    SELECT MIN("gdp")
+    FROM "core_economy"
+) OR "gdp" = (
+    SELECT MAX("gdp")
+    FROM "core_economy"
+);
+
+--HIGHEST AND LOWEST REMITTANCES YEAR AND VALUE
+SELECT "year" AS "YEAR",
+    PRINTF("%,d", "remittance") AS "REMITTANCE"
+FROM "financial_flows"
+WHERE "remittance" = (
+    SELECT MIN("remittance")
+    FROM "financial_flows"
+) OR "remittance" = (
+    SELECT MAX("remittance")
+    FROM "financial_flows"
+);
+
+--YEAR, PER CAPITAL WHEN UNEMPLOYEMENT WAS MIN AND MAX
+SELECT "year" AS "YEAR",
+    PRINTF("%,d", "per capita") AS "PER CAPITA",
+    "unemployed rate" AS "UNEMPLOYEMENT RATE"
+FROM "socio_economic_metrics"
+WHERE "unemployed rate" = (
+    SELECT MIN("unemployed rate")
+    FROM "socio_economic_metrics"
+) OR "unemployed rate" = (
+    SELECT MAX("unemployed rate")
+    FROM "socio_economic_metrics"
+);
+
+--REMITTANCE RELAVENT TO INVESTMENT (EVERY 5 YEARS)
+SELECT "year",
+    PRINTF("%,.0f", "total investments" * 1000000000.0) AS "Investment",
+    PRINTF("%,.0f", "remittance") AS "Remittance"
+FROM "financial_flows"
+WHERE "year" % 5 = 0;
+
+--TOP 5 YEARS WITH MOST INTERNET USERS AND THEIR ECCONOMIC METRICS
+SELECT "year" AS "YEAR",
+    ROUND("internet users",2) AS "INTERNET USERS",
+    ROUND("unemployed rate",2) "UNEMPLOYMENT",
+    ROUND("inflation rate",2) AS "INFLATION",
+    PRINTF("%,.0f", "per capita") AS "PER CAPITA"
+FROM "socio_economic_metrics"
+WHERE "year" IN (
+    SELECT"year"
+    FROM "socio_economic_metrics"
+    ORDER BY "internet users" DESC
+    LIMIT 5
+  )
+ORDER BY "internet users" ASC;
+
+--AVERAGE GPD IN EACH DECADE
+SELECT ("year" / 10) * 10 AS "DECADE",
+    PRINTF("%,.0f", AVG("gdp") * 1000000000.0) AS "AVERAGE GDP"
+FROM "core_economy"
+GROUP BY "DECADE"
+ORDER BY "DECADE";
+
+--AVERAGE POPULATION GROWTH IN EACH DECADE
+SELECT ("year" / 10) * 10 AS "DECADE",
+    ROUND(AVG("population growth"), 2) AS "AVERAGE POPULATION GROWTH"
+FROM "demographics"
+GROUP BY "DECADE"
+ORDER BY "DECADE";
+
+
 --SELECT QUESIES COMPLETED
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-

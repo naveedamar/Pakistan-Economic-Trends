@@ -1,8 +1,6 @@
 # Pakistan's Economic Trends (1970-2020)
 
-Naveed Amar Guriro
-
-Video overview: <URL HERE>
+Video overview: https://youtu.be/bBVIK4Yr1B4
 
 **Dataset**
 The data used for this project, "GDP of Pakistan (1961-2020)," was obtained from Kaggle. The dataset was compiled and provided by Sadia Saeed.
@@ -13,7 +11,7 @@ The data used for this project, "GDP of Pakistan (1961-2020)," was obtained from
 
 ## Scope
 
-This database serves as my **CS50 SQL** final project. Its purpose is to analyze Pakistan's macroeconomic and demographic trends from 1970 to 2020, providing a structured way to store time-series data for a data-driven analysis of economic development over five decades.
+This database serves as my **CS50 SQL** final project. Its purpose is to analyze Pakistan's macroeconomic and demographic trends from 1970 to 2020 (even though dataset has some data from 60s but i excluded that because most of it is unusable), providing a structured way to store time-series data for a data-driven analysis of economic development over five decades.
 
 * **In Scope:**
     The database includes core economic indicators (GDP, growth, inflation, investments), financial flows (remittance), labor market data (unemployed rate), population metrics (population, population growth, net migration), and social indicators (internet users). The primary entities are the data points for each year, spanning from 1970 to 2020.
@@ -81,7 +79,6 @@ The **`Year`** column is a **`PRIMARY KEY`** in the `core_economy` table to guar
 ***
 
 ## Relationships
-
 <p align="center">
   <img src="images/er diagram.png" alt="ER Diagram" width="600">
 </p>
@@ -102,6 +99,32 @@ All entities are linked by a **one-to-one relationship** with the `core_economy`
 * **Simplicity:** The design is a simplified model of a complex economy. It does not account for regional variations, different economic sectors, or the impact of global events, all of which are crucial for a complete analysis.
 * **Data Representation:** The database cannot represent non-numerical, qualitative data, such as a description of a major policy change in a given year. The design is purely quantitative and may lack context.
 * **Scalability:** While this design is suitable for this specific dataset, it would not scale well for real-time or high-volume data, such as per-quarter or per-month economic data. For a larger, more granular data set, a more sophisticated design would be necessary.
+
+***
+
+## Sample Queries
+
+### Average GDP Per Decade
+
+* This table shows the average GDP for each decade, highlighting long-term economic trends.
+<p align="center">
+    <img src="images/AVERAGE_GDP.png" width="500" height="300" alt="Average GDP Per Decade">
+</p>
+
+### Total And Avg Remittances Through Out 5 Decades
+
+* This table shows the total and average remittances over five decades, highlighting financial flows into the country.
+<p align="center">
+    <img src="images/TOTAL AND AVG REMITTANCE.png" width="500" height="300" alt="Total And Avg Remittances Through Out 5 Decades">
+</p>
+
+### Year, Per Capital When Unemployement Was Min And Max
+
+* This table shows the year and per capita income for the periods when the unemployment rate was at its lowest and highest.
+<p align="center">
+    <img src="images/YEAR, CAPITAL WHEN M&M EMPLOYMENT.png" width="500" height="300" alt="Year, Per Capital When Unemployement Was Min And Max">
+</p>
+
 
 ***
 
